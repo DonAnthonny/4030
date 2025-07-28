@@ -1,38 +1,37 @@
-<html lang="fa">
-
 <body>
 
+  <h1>پروژه NestJS احراز هویت با OTP و WebSocket</h1>
+
+  <p>این پروژه سیستم احراز هویت بر پایه شماره موبایل و کد OTP است. در حال حاضر، ارسال OTP در کنسول لاگ می‌شود و امکان اتصال WebSocket با اعتبارسنجی JWT فراهم شده است. ارسال پیامک واقعی و سایر امکانات در آینده افزوده می‌شوند.</p>
 
   <section>
-    <h2>ویژگی‌ها تا اینجا</h2>
+    <h2>ویژگی‌ها</h2>
     <ul>
-      <li>متصل به  mongo db</li>
-      <li>تولید و اعتبارسنجی OTP</li>
-      <li>ثبت نام کاربر پس از تایید OTP</li>
-      <li>احراز هویت JWT</li>
-      <li>محافظت نقش‌ها (Roles & Guards)</li>
-      <li>اتصال WebSocket با JWT</li>
-      <li>تست آسان API و WebSocket</li>
-      <li>امکان اتصال  به پنل پیامکی واقعی (کاوه‌نگار)</li>
+      <li>تولید و بررسی OTP</li>
+      <li>ثبت‌نام کاربر پس از تایید OTP</li>
+      <li>صدور توکن JWT برای احراز هویت</li>
+      <li>مدیریت نقش‌ها (Roles و Guards)</li>
+      <li>ارتباط WebSocket با اعتبارسنجی JWT</li>
+      <li>قابلیت توسعه برای اتصال به پنل پیامکی کاوه نگار</li>
     </ul>
   </section>
 
   <section>
     <h2>نصب و راه‌اندازی</h2>
     <ol>
-      <li>کلون کردن پروژه:
+      <li>کلون کردن مخزن:
         <pre><code>git clone &lt;repository-url&gt;
 cd &lt;project-folder&gt;</code></pre>
       </li>
-      <li>نصب پکیج‌ها:
+      <li>نصب وابستگی‌ها:
         <pre><code>npm install</code></pre>
       </li>
-      <li>ساخت فایل <code>.env</code> و وارد کردن متغیرهای زیر:
+      <li>ساخت فایل <code>.env</code> و اضافه کردن متغیرهای زیر:
         <pre><code>JWT_SECRET=your_jwt_secret_here
 MONGO_URI=your_mongodb_connection_string
-# KAVENEGAR_API_KEY=your_kavenegar_api_key_here  # فعلاً استفاده نمی‌شود</code></pre>
+# KAVENEGAR_API_KEY=your_kavenegar_api_key_here  (فعلاً استفاده نمی‌شود)</code></pre>
       </li>
-      <li>اجرای پروژه:
+      <li>اجرای برنامه:
         <pre><code>npm run start</code></pre>
       </li>
     </ol>
@@ -42,58 +41,49 @@ MONGO_URI=your_mongodb_connection_string
     <h2>APIها</h2>
 
     <h3>درخواست OTP</h3>
-    <p><strong>آدرس:</strong> <code>POST /auth/request-otp</code></p>
+    <p><strong>مسیر:</strong> <code>POST /auth/request-otp</code></p>
     <p><strong>ورودی:</strong></p>
-    <pre><code>{
-  "phone": "09038522822"
-}</code></pre>
+    <pre><code>{ "phone": "09038522822" }</code></pre>
     <p><strong>خروجی:</strong></p>
-    <pre><code>{
-  "message": "کد OTP برای 09038522822 ارسال شد."
-}</code></pre>
+    <pre><code>{ "message": "کد OTP برای 09038522822 ارسال شد." }</code></pre>
 
     <h3>تایید OTP</h3>
-    <p><strong>آدرس:</strong> <code>POST /auth/verify-otp</code></p>
-    <p><strong>ورودی (اگر کاربر ثبت‌نام نکرده باشد نام و نام خانوادگی اجباری است):</strong></p>
+    <p><strong>مسیر:</strong> <code>POST /auth/verify-otp</code></p>
+    <p><strong>ورودی (اگر کاربر جدید است نام و نام خانوادگی اجباری است):</strong></p>
     <pre><code>{
   "phone": "09038522822",
   "otp": "123456",
   "firstName": "پوریا",
   "lastName": "یاسربی",
-  "email": "optional@example.com",       // اختیاری
-  "referralCode": "optionalCode123"      // اختیاری
+  "email": "optional@example.com",       /* اختیاری */
+  "referralCode": "optionalCode123"      /* اختیاری */
 }</code></pre>
     <p><strong>خروجی:</strong></p>
-    <pre><code>{
-  "access_token": "JWT_TOKEN_HERE"
-}</code></pre>
-    <p>اگر کاربر ثبت‌نام نکرده باشد، پس از تایید OTP اطلاعات ثبت‌نام دریافت می‌شود و سپس توکن داده می‌شود.</p>
+    <pre><code>{ "access_token": "JWT_TOKEN_HERE" }</code></pre>
   </section>
 
   <section>
     <h2>WebSocket</h2>
-    <p>برای اتصال WebSocket ابتدا باید توکن JWT را ارسال کنید (مثلاً از طریق query پارامتر <code>token</code>):</p>
+    <p>برای اتصال به WebSocket باید توکن JWT را هنگام اتصال ارسال کنید:</p>
     <pre><code>const socket = io('http://localhost:3000', {
   query: { token: 'YOUR_JWT_TOKEN' }
 });</code></pre>
-    <p>در صورت اعتبارسنجی موفق اتصال برقرار می‌شود. در غیر این صورت اتصال قطع می‌شود.</p>
-    <p>ارسال پیام:</p>
-    <pre><code>socket.emit('message', 'پیام من');</code></pre>
-    <p>دریافت پاسخ:</p>
-    <pre><code>socket.on('messageResponse', (msg) => {
+
+    <p>پس از اتصال موفق، می‌توانید پیام ارسال و دریافت کنید:</p>
+    <pre><code>socket.emit('message', 'سلام سرور!');
+socket.on('messageResponse', msg =&gt; {
   console.log('پیام از سرور:', msg);
 });</code></pre>
   </section>
 
   <section>
-    <h2>اتصال به فرانت با Fetch</h2>
+    <h2>نمونه اتصال فرانت با Fetch API</h2>
     <h3>درخواست OTP</h3>
     <pre><code>fetch('http://localhost:3000/auth/request-otp', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ phone: '09038522822' }),
-})
-  .then(res =&gt; res.json())
+  body: JSON.stringify({ phone: '09038522822' })
+}).then(res =&gt; res.json())
   .then(data =&gt; console.log(data));</code></pre>
 
     <h3>تایید OTP و دریافت توکن</h3>
@@ -103,55 +93,43 @@ MONGO_URI=your_mongodb_connection_string
   body: JSON.stringify({
     phone: '09038522822',
     otp: '123456',
-    firstName: 'پوریا',     // اگر کاربر جدید است
+    firstName: 'پوریا',     /* اگر کاربر جدید است */
     lastName: 'یاسربی',
-    email: 'optional@example.com',     // اختیاری
-    referralCode: 'optionalCode123'     // اختیاری
-  }),
-})
-  .then(res =&gt; res.json())
+    email: 'optional@example.com',   /* اختیاری */
+    referralCode: 'optionalCode123'  /* اختیاری */
+  })
+}).then(res =&gt; res.json())
   .then(data =&gt; {
-    console.log('توکن دریافت شده:', data.access_token);
-    // توکن را در localStorage یا state ذخیره کنید
+    console.log('توکن دریافت شد:', data.access_token);
+    // ذخیره توکن در localStorage یا state
   });</code></pre>
   </section>
 
   <section>
-    <h2>نکات مهم برای آینده</h2>
+    <h2>نکات آینده</h2>
     <ul>
-      <li>اتصال به پنل پیامکی کاوه‌نگار با استفاده از <code>KAVENEGAR_API_KEY</code> و جایگزین کردن ارسال OTP در ماژول SMS</li>
-      <li>اعمال محدودیت نرخ ارسال OTP برای جلوگیری از سوء استفاده</li>
-      <li>پیاده‌سازی صفحه فرانت برای وارد کردن شماره، دریافت OTP و تکمیل ثبت نام</li>
-      <li>استفاده از WebSocket برای اطلاع‌رسانی بلادرنگ یا پیام‌های فوری</li>
-      <li>افزایش امنیت در JWT و WebSocket (مثلاً رفرش توکن)</li>
+      <li>اتصال به پنل پیامکی کاوه نگار برای ارسال واقعی OTP</li>
+      <li>افزودن محدودیت ارسال OTP (rate limit)</li>
+      <li>پیاده‌سازی صفحه فرانت برای ورود و ثبت‌نام کامل کاربر</li>
+      <li>افزایش امنیت WebSocket و توکن‌ها (رفرش توکن، انقضای دقیق‌تر)</li>
     </ul>
   </section>
 
   <section>
-    <h2>ساختار پروژه (خلاصه)</h2>
+    <h2>ساختار پروژه</h2>
     <ul>
-      <li><code>src/auth/</code> : ماژول احراز هویت، OTP، JWT</li>
-      <li><code>src/users/</code> : مدیریت کاربران</li>
-      <li><code>src/sms/</code> : ماژول ارسال پیامک (فعلاً لاگ)</li>
-      <li><code>src/websocket/</code> : WebSocket Gateway با JWT Auth</li>
-      <li><code>src/config/</code> : تنظیمات و env</li>
+      <li><code>src/auth/</code>: مدیریت احراز هویت، JWT و OTP</li>
+      <li><code>src/users/</code>: مدیریت کاربران</li>
+      <li><code>src/sms/</code>: ارسال پیامک (فعلاً لاگ)</li>
+      <li><code>src/websocket/</code>: گیت‌وی WebSocket با JWT</li>
+      <li><code>src/config/</code>: تنظیمات و متغیرهای محیطی</li>
     </ul>
-  </section>
-
-  <section>
-    <h2>اجرای تست‌ها</h2>
-    <p>تست API و WebSocket با ابزارهایی مثل Postman و یا صفحه تست WebSocket انجام شود.</p>
-  </section>
-
-  <section>
-    <h2>تماس و پشتیبانی</h2>
-    <p>اگر سوال یا مشکل داشتید، در Issues یا پیام خصوصی بپرسید.</p>
   </section>
 
   <hr />
-  <p style="text-align:center; font-size: 0.9em; color: #666;">
-    © 2025 پروژه احراز هویت NestJS - توسعه یافته توسط شما
-  </p>
+
+  <footer>
+    &copy; 2025 پروژه NestJS احراز هویت - توسعه یافته توسط شما
+  </footer>
 
 </body>
-</html>
