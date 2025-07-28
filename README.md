@@ -37,73 +37,47 @@ MONGO_URI=your_mongodb_connection_string
   </section>
 
   <section>
-    <h2>APIها</h2>
+   <h1>مستندات APIهای پروژه</h1>
 
-    <h3>درخواست OTP</h3>
+  <section>
+    <h2>درخواست OTP</h2>
     <p><strong>مسیر:</strong> <code>POST /auth/request-otp</code></p>
     <p><strong>ورودی:</strong></p>
-    <pre><code>{ "phone": "09038522822" }</code></pre>
+    <pre><code>{
+  "phone": "09038522822"
+}</code></pre>
     <p><strong>خروجی:</strong></p>
-    <pre><code>{ "message": "کد OTP برای 09038522822 ارسال شد." }</code></pre>
+    <pre><code>{
+  "message": "کد OTP برای 09038522822 ارسال شد."
+}</code></pre>
+  </section>
 
-    <h3>تایید OTP</h3>
+  <section>
+    <h2>تایید OTP</h2>
     <p><strong>مسیر:</strong> <code>POST /auth/verify-otp</code></p>
-    <p><strong>ورودی (اگر کاربر جدید است نام و نام خانوادگی اجباری است):</strong></p>
+    <p><strong>ورودی:</strong> (اگر کاربر جدید باشد، <code>firstName</code> و <code>lastName</code> اجباری است)</p>
     <pre><code>{
   "phone": "09038522822",
   "otp": "123456",
   "firstName": "پوریا",
   "lastName": "یاسربی",
-  "email": "optional@example.com",       /* اختیاری */
-  "referralCode": "optionalCode123"      /* اختیاری */
+  "email": "optional@example.com",  /* اختیاری */
+  "referralCode": "optionalCode123" /* اختیاری */
 }</code></pre>
     <p><strong>خروجی:</strong></p>
-    <pre><code>{ "access_token": "JWT_TOKEN_HERE" }</code></pre>
+    <pre><code>{
+  "access_token": "JWT_TOKEN_HERE"
+}</code></pre>
   </section>
 
   <section>
-    <h2>WebSocket</h2>
-    <p>برای اتصال به WebSocket باید توکن JWT را هنگام اتصال ارسال کنید:</p>
-    <pre><code>const socket = io('http://localhost:3000', {
-  query: { token: 'YOUR_JWT_TOKEN' }
-});</code></pre>
-
-    <p>پس از اتصال موفق، می‌توانید پیام ارسال و دریافت کنید:</p>
-    <pre><code>socket.emit('message', 'سلام سرور!');
-socket.on('messageResponse', msg =&gt; {
-  console.log('پیام از سرور:', msg);
-});</code></pre>
+    <h2>توضیحات کلی</h2>
+    <ul>
+      <li>پس از درخواست OTP، کد در کنسول لاگ می‌شود (در آینده با پنل پیامکی واقعی جایگزین می‌شود).</li>
+      <li>در مرحله تایید OTP اگر کاربر وجود داشت، مستقیماً توکن JWT صادر می‌شود.</li>
+      <li>اگر کاربر جدید بود، پس از تایید OTP اطلاعات تکمیلی دریافت و سپس توکن صادر می‌شود.</li>
+    </ul>
   </section>
-
-  <section>
-    <h2>نمونه اتصال فرانت با Fetch API</h2>
-    <h3>درخواست OTP</h3>
-    <pre><code>fetch('http://localhost:3000/auth/request-otp', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ phone: '09038522822' })
-}).then(res =&gt; res.json())
-  .then(data =&gt; console.log(data));</code></pre>
-
-    <h3>تایید OTP و دریافت توکن</h3>
-    <pre><code>fetch('http://localhost:3000/auth/verify-otp', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    phone: '09038522822',
-    otp: '123456',
-    firstName: 'پوریا',     /* اگر کاربر جدید است */
-    lastName: 'یاسربی',
-    email: 'optional@example.com',   /* اختیاری */
-    referralCode: 'optionalCode123'  /* اختیاری */
-  })
-}).then(res =&gt; res.json())
-  .then(data =&gt; {
-    console.log('توکن دریافت شد:', data.access_token);
-    // ذخیره توکن در localStorage یا state
-  });</code></pre>
-  </section>
-
   <section>
     <h2>نکات آینده</h2>
     <ul>
