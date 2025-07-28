@@ -88,7 +88,7 @@ MONGO_URI=your_mongodb_connection_string
       <li>فتچ با فرانت</li>
       <li>افزایش امنیت WebSocket و توکن‌ها (رفرش توکن، انقضای دقیق‌تر)</li>
       
-    </ul>
+   
   </section>
 
   <section>
