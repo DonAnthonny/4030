@@ -1,18 +1,5 @@
 <html lang="fa">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>README - NestJS OTP & WebSocket Authentication</title>
-  <style>
-    body { font-family: Tahoma, Arial, sans-serif; line-height: 1.6; padding: 20px; background: #f7f9fc; color: #333; }
-    h1, h2, h3 { color: #2c3e50; }
-    pre { background: #272822; color: #f8f8f2; padding: 10px; overflow-x: auto; border-radius: 5px; }
-    code { font-family: monospace; background: #ecf0f1; padding: 2px 4px; border-radius: 3px; }
-    a { color: #2980b9; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    section { margin-bottom: 30px; }
-  </style>
-</head>
+
 <body>
 
   <h1>پروژه NestJS احراز هویت با OTP و WebSocket</h1>
