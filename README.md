@@ -83,7 +83,7 @@ MONGO_URI=your_mongodb_connection_string
     <ul>
       <li>اتصال به پنل پیامکی کاوه نگار برای ارسال واقعی OTP</li>
       <li>افزودن محدودیت ارسال OTP (rate limit)</li>
-      <li>پیاده‌سازی صفحه فرانت برای ورود و ثبت‌نام کامل کاربر</li>
+      <li>فتچ با فرانت</li>
       <li>افزایش امنیت WebSocket و توکن‌ها (رفرش توکن، انقضای دقیق‌تر)</li>
     </ul>
   </section>
@@ -101,8 +101,5 @@ MONGO_URI=your_mongodb_connection_string
 
   <hr />
 
-  <footer>
-    &copy; 2025 پروژه NestJS احراز هویت - توسعه یافته توسط شما
-  </footer>
-
+ 
 </body>
