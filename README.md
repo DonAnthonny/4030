@@ -60,7 +60,7 @@ MONGO_URI=your_mongodb_connection_string
   "phone": "09038522822",
   "otp": "123456",
   "firstName": "پوریا",
-  "lastName": "یاسربی",
+  "lastName": "یثربی",
   "email": "optional@example.com",  /* اختیاری */
   "referralCode": "optionalCode123" /* اختیاری */
 }</code></pre>
