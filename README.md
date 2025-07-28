@@ -1,98 +1,172 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>README - NestJS OTP & WebSocket Authentication</title>
+  <style>
+    body { font-family: Tahoma, Arial, sans-serif; line-height: 1.6; padding: 20px; background: #f7f9fc; color: #333; }
+    h1, h2, h3 { color: #2c3e50; }
+    pre { background: #272822; color: #f8f8f2; padding: 10px; overflow-x: auto; border-radius: 5px; }
+    code { font-family: monospace; background: #ecf0f1; padding: 2px 4px; border-radius: 3px; }
+    a { color: #2980b9; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    section { margin-bottom: 30px; }
+  </style>
+</head>
+<body>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+  <h1>پروژه NestJS احراز هویت با OTP و WebSocket</h1>
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+  <p>این پروژه یک سیستم احراز هویت ساده بر پایه شماره موبایل و OTP است که با <code>NestJS</code> پیاده‌سازی شده است. OTP فعلاً در کنسول لاگ می‌شود و ارسال پیامک واقعی بعداً به پنل پیامکی کاوه‌نگار متصل خواهد شد. همچنین WebSocket برای ارتباط بلادرنگ همراه با اعتبارسنجی JWT اضافه شده است.</p>
 
-## Description
+  <section>
+    <h2>ویژگی‌ها</h2>
+    <ul>
+      <li>تولید و اعتبارسنجی OTP</li>
+      <li>ثبت نام کاربر پس از تایید OTP</li>
+      <li>احراز هویت JWT</li>
+      <li>محافظت نقش‌ها (Roles & Guards)</li>
+      <li>اتصال WebSocket با JWT</li>
+      <li>تست آسان API و WebSocket</li>
+      <li>امکان اتصال آینده به پنل پیامکی واقعی (کاوه‌نگار)</li>
+    </ul>
+  </section>
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+  <section>
+    <h2>نصب و راه‌اندازی</h2>
+    <ol>
+      <li>کلون کردن پروژه:
+        <pre><code>git clone &lt;repository-url&gt;
+cd &lt;project-folder&gt;</code></pre>
+      </li>
+      <li>نصب پکیج‌ها:
+        <pre><code>npm install</code></pre>
+      </li>
+      <li>ساخت فایل <code>.env</code> و وارد کردن متغیرهای زیر:
+        <pre><code>JWT_SECRET=your_jwt_secret_here
+MONGO_URI=your_mongodb_connection_string
+# KAVENEGAR_API_KEY=your_kavenegar_api_key_here  # فعلاً استفاده نمی‌شود</code></pre>
+      </li>
+      <li>اجرای پروژه:
+        <pre><code>npm run start</code></pre>
+      </li>
+    </ol>
+  </section>
 
-## Project setup
+  <section>
+    <h2>APIها</h2>
 
-```bash
-$ npm install
-```
+    <h3>درخواست OTP</h3>
+    <p><strong>آدرس:</strong> <code>POST /auth/request-otp</code></p>
+    <p><strong>ورودی:</strong></p>
+    <pre><code>{
+  "phone": "09038522822"
+}</code></pre>
+    <p><strong>خروجی:</strong></p>
+    <pre><code>{
+  "message": "کد OTP برای 09038522822 ارسال شد."
+}</code></pre>
 
-## Compile and run the project
+    <h3>تایید OTP</h3>
+    <p><strong>آدرس:</strong> <code>POST /auth/verify-otp</code></p>
+    <p><strong>ورودی (اگر کاربر ثبت‌نام نکرده باشد نام و نام خانوادگی اجباری است):</strong></p>
+    <pre><code>{
+  "phone": "09038522822",
+  "otp": "123456",
+  "firstName": "پوریا",
+  "lastName": "یاسربی",
+  "email": "optional@example.com",       // اختیاری
+  "referralCode": "optionalCode123"      // اختیاری
+}</code></pre>
+    <p><strong>خروجی:</strong></p>
+    <pre><code>{
+  "access_token": "JWT_TOKEN_HERE"
+}</code></pre>
+    <p>اگر کاربر ثبت‌نام نکرده باشد، پس از تایید OTP اطلاعات ثبت‌نام دریافت می‌شود و سپس توکن داده می‌شود.</p>
+  </section>
 
-```bash
-# development
-$ npm run start
+  <section>
+    <h2>WebSocket</h2>
+    <p>برای اتصال WebSocket ابتدا باید توکن JWT را ارسال کنید (مثلاً از طریق query پارامتر <code>token</code>):</p>
+    <pre><code>const socket = io('http://localhost:3000', {
+  query: { token: 'YOUR_JWT_TOKEN' }
+});</code></pre>
+    <p>در صورت اعتبارسنجی موفق اتصال برقرار می‌شود. در غیر این صورت اتصال قطع می‌شود.</p>
+    <p>ارسال پیام:</p>
+    <pre><code>socket.emit('message', 'پیام من');</code></pre>
+    <p>دریافت پاسخ:</p>
+    <pre><code>socket.on('messageResponse', (msg) => {
+  console.log('پیام از سرور:', msg);
+});</code></pre>
+  </section>
 
-# watch mode
-$ npm run start:dev
+  <section>
+    <h2>اتصال به فرانت با Fetch</h2>
+    <h3>درخواست OTP</h3>
+    <pre><code>fetch('http://localhost:3000/auth/request-otp', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ phone: '09038522822' }),
+})
+  .then(res =&gt; res.json())
+  .then(data =&gt; console.log(data));</code></pre>
 
-# production mode
-$ npm run start:prod
-```
+    <h3>تایید OTP و دریافت توکن</h3>
+    <pre><code>fetch('http://localhost:3000/auth/verify-otp', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    phone: '09038522822',
+    otp: '123456',
+    firstName: 'پوریا',     // اگر کاربر جدید است
+    lastName: 'یاسربی',
+    email: 'optional@example.com',     // اختیاری
+    referralCode: 'optionalCode123'     // اختیاری
+  }),
+})
+  .then(res =&gt; res.json())
+  .then(data =&gt; {
+    console.log('توکن دریافت شده:', data.access_token);
+    // توکن را در localStorage یا state ذخیره کنید
+  });</code></pre>
+  </section>
 
-## Run tests
+  <section>
+    <h2>نکات مهم برای آینده</h2>
+    <ul>
+      <li>اتصال به پنل پیامکی کاوه‌نگار با استفاده از <code>KAVENEGAR_API_KEY</code> و جایگزین کردن ارسال OTP در ماژول SMS</li>
+      <li>اعمال محدودیت نرخ ارسال OTP برای جلوگیری از سوء استفاده</li>
+      <li>پیاده‌سازی صفحه فرانت برای وارد کردن شماره، دریافت OTP و تکمیل ثبت نام</li>
+      <li>استفاده از WebSocket برای اطلاع‌رسانی بلادرنگ یا پیام‌های فوری</li>
+      <li>افزایش امنیت در JWT و WebSocket (مثلاً رفرش توکن)</li>
+    </ul>
+  </section>
 
-```bash
-# unit tests
-$ npm run test
+  <section>
+    <h2>ساختار پروژه (خلاصه)</h2>
+    <ul>
+      <li><code>src/auth/</code> : ماژول احراز هویت، OTP، JWT</li>
+      <li><code>src/users/</code> : مدیریت کاربران</li>
+      <li><code>src/sms/</code> : ماژول ارسال پیامک (فعلاً لاگ)</li>
+      <li><code>src/websocket/</code> : WebSocket Gateway با JWT Auth</li>
+      <li><code>src/config/</code> : تنظیمات و env</li>
+    </ul>
+  </section>
 
-# e2e tests
-$ npm run test:e2e
+  <section>
+    <h2>اجرای تست‌ها</h2>
+    <p>تست API و WebSocket با ابزارهایی مثل Postman و یا صفحه تست WebSocket انجام شود.</p>
+  </section>
 
-# test coverage
-$ npm run test:cov
-```
+  <section>
+    <h2>تماس و پشتیبانی</h2>
+    <p>اگر سوال یا مشکل داشتید، در Issues یا پیام خصوصی بپرسید.</p>
+  </section>
 
-## Deployment
+  <hr />
+  <p style="text-align:center; font-size: 0.9em; color: #666;">
+    © 2025 پروژه احراز هویت NestJS - توسعه یافته توسط شما
+  </p>
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+</body>
+</html>
