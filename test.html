@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WebSocket JWT Test</title>
+    <script src="https://cdn.socket.io/4.5.0/socket.io.min.js"></script>
+  </head>
+  <body>
+    <h1>WebSocket JWT Test</h1>
+    <button onclick="connect()">اتصال با JWT</button>
+    <button onclick="sendMessage()">ارسال پیام</button>
+    <pre id="log"></pre>
+
+    <script>
+      let socket;
+
+      function log(msg) {
+        document.getElementById('log').textContent += msg + '\n';
+      }
+
+      function connect() {
+        const token = prompt('توکن JWT خود را وارد کنید:');
+        if (!token) {
+          alert('توکن لازم است!');
+          return;
+        }
+
+        socket = io('http://localhost:3000', {
+          query: { token }
+        });
+
+        socket.on('connect', () => {
+          log('متصل شد به سرور');
+        });
+
+        socket.on('disconnect', () => {
+          log('قطع اتصال از سرور');
+        });
+
+        socket.on('messageResponse', (msg) => {
+          log('پیام از سرور: ' + msg);
+        });
+
+        socket.on('connect_error', (err) => {
+          log('خطا در اتصال: ' + err.message);
+        });
+      }
+
+      function sendMessage() {
+        if (!socket) {
+          alert('ابتدا باید متصل شوید');
+          return;
+        }
+        const msg = prompt('پیام خود را وارد کنید:');
+        socket.emit('message', msg);
+        log('پیام ارسال شد: ' + msg);
+      }
+    </script>
+  </body>
+</html>
