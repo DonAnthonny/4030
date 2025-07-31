@@ -6,6 +6,10 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { SmsModule } from './sms/sms.module';
 import { WebsocketModule } from './websocket/websocket.module';
+import { DriverModule } from './driver/driver.module';
+import { DriverService } from './driver/services/driver.service';
+import { DriverController } from './driver/controllers/driver.controller';
+import { DriverAuthModule } from './driverAuth/driver-auth.module';
 
 @Module({
   imports: [
@@ -15,6 +19,9 @@ import { WebsocketModule } from './websocket/websocket.module';
     UsersModule,
     SmsModule,
     WebsocketModule,
+    DriverModule,
+    DriverAuthModule, // ✅ این ماژول همه چیز رو داره
   ],
 })
 export class AppModule {}
+

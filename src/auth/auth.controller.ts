@@ -1,5 +1,4 @@
-// src/auth/auth.controller.ts
-import { Body, Controller, Post } from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { RequestOtpDto } from './dto/request-otp.dto';
@@ -14,7 +13,7 @@ export class AuthController {
   @ApiOperation({ summary: 'درخواست کد OTP' })
   @ApiResponse({ status: 201, description: 'کد OTP ارسال شد.' })
   requestOtp(@Body() dto: RequestOtpDto) {
-    return this.authService.requestOtp(dto.phone);
+    return this.authService.requestOtp(dto.phone, dto.type);
   }
 
   @Post('verify-otp')

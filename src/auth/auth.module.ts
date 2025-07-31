@@ -9,15 +9,17 @@ import { UsersModule } from '../users/users.module';
 import { OtpService } from './otp.service';
 import { JwtStrategy } from './jwt.strategy';
 
+// src/auth/auth.module.ts
 @Module({
+  // ...
   imports: [
     ConfigModule,
     PassportModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
-      useFactory: async (config: ConfigService) => ({
-        secret: config.get<string>('JWT_SECRET'),
-        signOptions: { expiresIn: config.get<string>('JWT_EXPIRES_IN') },
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get<string>('JWT_SECRET'),
+        signOptions: { expiresIn: configService.get<string>('JWT_EXPIRES_IN') || '1d' },
       }),
       inject: [ConfigService],
     }),
@@ -25,6 +27,6 @@ import { JwtStrategy } from './jwt.strategy';
   ],
   providers: [AuthService, OtpService, JwtStrategy],
   controllers: [AuthController],
-  exports: [AuthService],
+  exports: [AuthService, OtpService, JwtModule], // اینجا JwtModule رو اضافه کن
 })
 export class AuthModule {}
