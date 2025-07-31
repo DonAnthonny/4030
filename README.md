@@ -1,98 +1,108 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+<body>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+  <h1>4030</h1>
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+  <section>
+    <h2>ویژگی‌هاز تا اینجا</h2>
+    <ul>
+      <li>تولید و بررسی OTP</li>
+      <li>ثبت‌نام مسافر پس از تایید OTP</li>
+      <li>صدور توکن JWT برای احراز هویت</li>
+      <li>مدیریت نقش‌ها (Roles و Guards)</li>
+      <li>ارتباط WebSocket با اعتبارسنجی JWT</li>
+      <li>قابلیت توسعه برای اتصال به پنل پیامکی کاوه نگار</li>
+    </ul>
+  </section>
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+  <section>
+    <h2>نصب و راه‌اندازی</h2>
+    <ol>
+      <li>کلون کردن مخزن:
+        <pre><code>git clone &lt;repository-url&gt;
+cd &lt;project-folder&gt;</code></pre>
+      </li>
+      <li>نصب وابستگی‌ها:
+        <pre><code>npm install</code></pre>
+      </li>
+      <li>ساخت فایل <code>.env</code> و اضافه کردن متغیرهای زیر:
+        <pre><code>JWT_SECRET=your_jwt_secret_here
+MONGO_URI=your_mongodb_connection_string
+# KAVENEGAR_API_KEY=your_kavenegar_api_key_here  (فعلاً استفاده نمی‌شود)</code></pre>
+      </li>
+      <li>اجرای برنامه:
+        <pre><code>npm run start</code></pre>
+      </li>
+    </ol>
+  </section>
 
-## Project setup
+  <section>
+   <h1>مستندات APIهای پروژه</h1>
 
-```bash
-$ npm install
-```
+  <section>
+    <h2>درخواست OTP</h2>
+    <p><strong>مسیر:</strong> <code>POST /auth/request-otp</code></p>
+    <p><strong>ورودی:</strong></p>
+    <pre><code>{
+  "phone": "09038522822"
+}</code></pre>
+    <p><strong>خروجی:</strong></p>
+    <pre><code>{
+  "message": "کد OTP برای 09038522822 ارسال شد."
+}</code></pre>
+  </section>
 
-## Compile and run the project
+  <section>
+    <h2>تایید OTP</h2>
+    <p><strong>مسیر:</strong> <code>POST /auth/verify-otp</code></p>
+    <p><strong>ورودی:</strong> (اگر کاربر جدید باشد، <code>firstName</code> و <code>lastName</code> اجباری است)</p>
+    <pre><code>{
+  "phone": "09038522822",
+  "otp": "123456",
+  "firstName": "پوریا",
+  "lastName": "یثربی",
+  "email": "optional@example.com",  /* اختیاری */
+  "referralCode": "optionalCode123" /* اختیاری */
+}</code></pre>
+    <p><strong>خروجی:</strong></p>
+    <pre><code>{
+  "access_token": "JWT_TOKEN_HERE"
+}</code></pre>
+  </section>
 
-```bash
-# development
-$ npm run start
+  <section>
+    <h2>توضیحات کلی</h2>
+    <ul>
+      <li>پس از درخواست OTP، کد در کنسول لاگ می‌شود (در آینده با پنل پیامکی واقعی جایگزین می‌شود).</li>
+      <li>در مرحله تایید OTP اگر کاربر وجود داشت، مستقیماً توکن JWT صادر می‌شود.</li>
+      <li>اگر کاربر جدید بود، پس از تایید OTP اطلاعات تکمیلی دریافت و سپس توکن صادر می‌شود.</li>
+       <li>WebSocket پس از ورود موفق فعال می‌شود و کاربر می‌تواند از ارتباط بلادرنگ برای مواردی مانند اطلاع‌رسانی، موقعیت و درخواست سرویس استفاده کند.</li>
+      <li>فایل <code>test.html</code> برای تست WebSocket در محیط مرورگر فراهم شده است.</li>
+    </ul>
+  </section>
+  <section>
+    <h2>نکات آینده</h2>
+    <ul>
+      <li>اتصال به پنل پیامکی کاوه نگار برای ارسال واقعی OTP</li>
+      <li>افزودن محدودیت ارسال OTP (rate limit)</li>
+      <li>فتچ با فرانت</li>
+      <li>افزایش امنیت WebSocket و توکن‌ها (رفرش توکن، انقضای دقیق‌تر)</li>
+      
+   
+  </section>
 
-# watch mode
-$ npm run start:dev
+  <section>
+    <h2>ساختار پروژه</h2>
+    <ul>
+      <li><code>src/auth/</code>: مدیریت احراز هویت، JWT و OTP</li>
+      <li><code>src/users/</code>: مدیریت کاربران</li>
+      <li><code>src/sms/</code>: ارسال پیامک (فعلاً لاگ)</li>
+      <li><code>src/websocket/</code>: گیت‌وی WebSocket با JWT</li>
+      <li><code>src/config/</code>: تنظیمات و متغیرهای محیطی</li>
+    </ul>
+  </section>
 
-# production mode
-$ npm run start:prod
-```
+  <hr />
 
-## Run tests
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+ 
+</body>
